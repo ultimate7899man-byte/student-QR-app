@@ -171,14 +171,14 @@
         <div class="center-hub">
             <div class="card-container">
                 <h2 class="title">ADMIN & DATABASE PANEL</h2>
-                <p style="color: #bbb; font-size: 14px; margin-bottom: 15px; text-align: center;">Access Formspree Submissions or Generate Dashboard QR.</p>
+                <p style="color: #bbb; font-size: 14px; margin-bottom: 15px; text-align: center;">Access Formspree Dashboard or Generate Master QR.</p>
                 
                 <a href="https://formspree.io/" target="_blank" class="btn btn-download" style="display: block; text-decoration: none; text-align: center; line-height: normal; margin-bottom: 15px;">Open Formspree Dashboard ↗</a>
                 
                 <button class="btn btn-master" onclick="generateMasterQR()">Generate Master QR ⚡</button>
 
                 <div id="masterQrSection">
-                    <h3 class="title" style="margin-top: 20px; font-size: 16px;">MASTER SUBMISSION QR</h3>
+                    <h3 class="title" style="margin-top: 20px; font-size: 16px;">MASTER APP QR</h3>
                     <div class="qr-wrapper"><img id="masterQrImage" src="" alt="Master QR Code"></div>
                     <p style="color: #bbb; font-size: 12px; margin-top: 5px;">Scan this to open the live app directly.</p>
                 </div>
@@ -213,7 +213,7 @@
     </div>
 
     <script>
-        // Formspree Endpoint URL configured
+        // Formspree Endpoint URL Added
         const FORMSPREE_URL = "https://formspree.io/f/xjygblne";
         const LIVE_WEB_URL = "https://ultimate7899man-byte.github.io/student-QR-app/";
 
@@ -338,7 +338,7 @@
             submitBtn.innerText = "Syncing...";
 
             const payload = {
-                action: "register",
+                type: "Student Registration",
                 name: name,
                 uucms: uucms,
                 phone: phone,
@@ -389,9 +389,11 @@
             scanBtn.disabled = true;
             scanBtn.innerText = "Submitting...";
 
+            const scanPayloadWithMeta = {
+                type: "Scan Verification Submission",
+                ...scannedPayload
+            };
+
             try {
                 const response = await fetch(FORMSPREE_URL, {
                     method: "POST",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
