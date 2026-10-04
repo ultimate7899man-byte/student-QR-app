@@ -6,7 +6,13 @@
     <title>Student ID QR - Cyber Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
             background: radial-gradient(circle at 50% 20%, #1e0938, #0a0b1c, #030308);
             min-height: 100vh;
@@ -18,26 +24,84 @@
             overflow-x: hidden;
             position: relative;
         }
-        .bg-orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35; pointer-events: none; }
-        .orb-left { width: 300px; height: 300px; background: #00f0ff; top: 15%; left: 10%; }
-        .orb-right { width: 320px; height: 320px; background: #9d00ff; bottom: 15%; right: 10%; }
 
-        .nav-switch { position: absolute; top: 20px; z-index: 10; display: flex; gap: 10px; }
+        /* Neon Ambient Glow */
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.35;
+            pointer-events: none;
+        }
+        .orb-left {
+            width: 300px;
+            height: 300px;
+            background: #00f0ff;
+            top: 15%;
+            left: 10%;
+        }
+        .orb-right {
+            width: 320px;
+            height: 320px;
+            background: #9d00ff;
+            bottom: 15%;
+            right: 10%;
+        }
+
+        /* Top Navigation Switcher */
+        .nav-switch {
+            position: absolute;
+            top: 20px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+
         .nav-btn {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff; padding: 8px 16px; border-radius: 20px;
-            font-family: 'Orbitron', sans-serif; font-size: 11px; cursor: pointer; transition: 0.3s;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
         }
-        .nav-btn.active, .nav-btn:hover { background: #00f0ff; color: #030308; box-shadow: 0 0 15px rgba(0, 240, 255, 0.6); }
 
-        .cyber-stage { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 500px; position: relative; z-index: 2; margin-top: 30px; }
-        .cyber-stage.admin-stage { max-width: 900px; }
-        .center-hub { width: 100%; position: relative; }
+        .nav-btn.active, .nav-btn:hover {
+            background: #00f0ff;
+            color: #030308;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+            border-color: #00f0ff;
+        }
+
+        /* Main Container */
+        .cyber-stage {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 2;
+            margin-top: 30px;
+        }
+
+        .cyber-stage.admin-stage {
+            max-width: 900px;
+        }
+
+        .center-hub {
+            width: 100%;
+            position: relative;
+        }
 
         .card-container {
             background: rgba(16, 17, 36, 0.88);
             backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(0, 240, 255, 0.3);
             border-radius: 22px;
             padding: 35px 25px 25px 25px;
@@ -45,65 +109,154 @@
         }
 
         .title {
-            font-family: 'Orbitron', sans-serif; color: #ffffff; font-size: 20px;
-            text-align: center; letter-spacing: 2px; text-shadow: 0 0 12px #00f0ff; margin-bottom: 22px;
+            font-family: 'Orbitron', sans-serif;
+            color: #ffffff;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+            text-shadow: 0 0 12px #00f0ff;
+            margin-bottom: 22px;
         }
 
-        .input-group { display: flex; flex-direction: column; gap: 11px; }
-        input, select {
-            width: 100%; padding: 12px 14px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #ffffff; font-size: 14px; outline: none;
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
         }
-        input::placeholder { color: #7d84a0; }
-        select option { background-color: #101124; color: #ffffff; }
+
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input::placeholder {
+            color: #7d84a0;
+        }
+
+        select option {
+            background-color: #101124;
+            color: #ffffff;
+        }
+
+        input:focus, select:focus {
+            border-color: #00f0ff;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.45);
+            background: rgba(255, 255, 255, 0.09);
+        }
 
         .btn {
-            width: 100%; padding: 13px; border: none; border-radius: 8px;
-            font-weight: 600; font-size: 15px; cursor: pointer; text-transform: uppercase;
-            letter-spacing: 1px; transition: 0.3s ease; margin-top: 15px;
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s ease;
+            margin-top: 15px;
         }
-        .btn-generate { background: linear-gradient(135deg, #ff2a6d, #9b00e8); color: #fff; }
-        .btn-download { background: linear-gradient(135deg, #00f0ff, #0077fe); color: #fff; }
-        .btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; text-decoration: none; display: block; text-align: center; }
-        .btn-copy { background: linear-gradient(135deg, #ff9900, #ff5500); color: #fff; }
-        .btn-reset { background: rgba(255, 255, 255, 0.1); color: #bbb; }
-        .btn-master { background: linear-gradient(135deg, #00ff87, #60efff); color: #030308; }
 
-        #resultSection, #scanVerifyStage, #masterQrSection { display: none; text-align: center; }
-        .qr-wrapper { background: #ffffff; padding: 14px; border-radius: 12px; display: inline-block; margin: 15px 0; }
-        #qrImage, #masterQrImage { display: block; width: 190px; height: 190px; margin: 0 auto; }
+        .btn-generate {
+            background: linear-gradient(135deg, #ff2a6d, #9b00e8);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(255, 42, 109, 0.4);
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 42, 109, 0.7);
+        }
+
+        .btn-generate:disabled {
+            background: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #00f0ff, #0077fe);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 240, 255, 0.6);
+        }
+
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: 10px;
+        }
+
+        .btn-reset:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        #resultSection, #scanVerifySection {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .qr-wrapper {
+            background: #ffffff;
+            padding: 14px;
+            border-radius: 12px;
+            display: inline-block;
+            margin: 15px 0;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        #qrImage {
+            display: block;
+            width: 190px;
+            height: 190px;
+        }
+
+        .admin-stage .card-container {
+            padding: 20px;
+            text-align: center;
+        }
 
         .info-box {
-            text-align: left; background: rgba(255, 255, 255, 0.05);
-            padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .info-box p { font-size: 14px; color: #ddd; margin-bottom: 8px; word-break: break-all; }
 
-        /* --- Password Modal Styles --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px);
-            display: none; align-items: center; justify-content: center;
-            z-index: 100;
+        .info-box p {
+            font-size: 14px;
+            color: #ddd;
+            margin-bottom: 8px;
         }
-        .modal-content {
-            background: rgba(16, 17, 36, 0.95);
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            border-radius: 18px; padding: 25px; width: 90%; max-width: 360px;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2); text-align: center;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
-        .modal-title { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 16px; margin-bottom: 18px; letter-spacing: 1px; }
-        .password-field-wrapper { position: relative; width: 100%; }
-        .password-field-wrapper input { padding-right: 42px; }
-        .eye-toggle-btn {
-            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-            background: none; border: none; cursor: pointer; color: #7d84a0;
-            display: flex; align-items: center; justify-content: center; padding: 5px;
-            transition: color 0.2s ease;
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
+            100% { box-shadow: 0 0 30px rgba(255, 42, 109, 0.6); }
         }
-        .eye-toggle-btn:hover { color: #00f0ff; }
-        .modal-actions { display: flex; gap: 10px; margin-top: 15px; }
-        .modal-actions .btn { margin-top: 0; padding: 10px; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -113,20 +266,22 @@
 
     <div class="nav-switch" id="topNavSwitch">
         <button class="nav-btn active" id="genTabBtn" onclick="switchView('generator')">⚡ Generator</button>
-        <button class="nav-btn" id="adminTabBtn" onclick="requestAdminAccess()">📊 Admin Panel</button>
+        <button class="nav-btn" id="adminTabBtn" onclick="requestAdminAccess()">📊 Google Sheet</button>
     </div>
 
-    <!-- 1. Generator View -->
+    <!-- 1. Generator Stage -->
     <div class="cyber-stage" id="generatorStage">
         <div class="center-hub">
             <div class="card-container">
                 <form id="studentForm" onsubmit="handleFormSubmit(event)">
                     <h2 class="title">STUDENT ID QR</h2>
+                    
                     <div class="input-group">
                         <input type="text" id="name" placeholder="Student Full Name" required>
                         <input type="text" id="uucms" placeholder="UUCMS No (Exact 12 Chars)" maxlength="12" style="text-transform: uppercase;" required>
                         <input type="tel" id="phone" placeholder="Mobile No (10 Digits)" maxlength="10" required>
                         <input type="text" id="college" placeholder="College Name" required>
+                        
                         <select id="course" required>
                             <option value="">-- Choose Course --</option>
                             <option value="BCA">BCA</option>
@@ -134,25 +289,29 @@
                             <option value="B.COM">B.COM</option>
                         </select>
                     </div>
+
                     <button type="submit" id="submitBtn" class="btn btn-generate">Generate QR & Sync ⚡</button>
                 </form>
 
                 <div id="resultSection">
                     <h2 class="title">IDENTITY SECURED</h2>
-                    <div class="qr-wrapper"><img id="qrImage" src="" alt="Student QR Code"></div>
+                    
+                    <div class="qr-wrapper">
+                        <img id="qrImage" src="" alt="Student QR Code">
+                    </div>
+
                     <button class="btn btn-download" onclick="downloadQR()">Download QR Code ⬇</button>
-                    <a id="whatsappShareBtn" href="#" target="_blank" class="btn btn-whatsapp">Share Link on WhatsApp 💬</a>
                     <button class="btn btn-reset" onclick="resetForm()">New Identity ↺</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 2. Scan & Submit View -->
+    <!-- 2. Mobile Scan & Submit Stage (जब कोई QR स्कैन करके खोलेगा) -->
     <div class="cyber-stage" id="scanVerifyStage" style="display: none;">
         <div class="center-hub">
             <div class="card-container">
-                <h2 class="title">STUDENT DETAILS</h2>
+                <h2 class="title">VERIFY & SUBMIT</h2>
                 <div class="info-box">
                     <p><strong>Name:</strong> <span id="scanName">-</span></p>
                     <p><strong>UUCMS:</strong> <span id="scanUucms">-</span></p>
@@ -160,77 +319,43 @@
                     <p><strong>Course:</strong> <span id="scanCourse">-</span></p>
                     <p><strong>College:</strong> <span id="scanCollege">-</span></p>
                 </div>
-                <button class="btn btn-copy" onclick="copyStudentDetails()">Copy All Details 📋</button>
-                <button class="btn btn-download" id="scanSubmitBtn" onclick="submitScannedData()">Submit Data ⚡</button>
+                <button class="btn btn-download" id="scanSubmitBtn" onclick="submitScannedData()">Confirm & Send to Sheet ⚡</button>
             </div>
         </div>
     </div>
 
-    <!-- 3. Admin View with Master QR Option -->
+    <!-- 3. Admin Database Stage -->
     <div class="cyber-stage admin-stage" id="adminStage" style="display: none;">
         <div class="center-hub">
             <div class="card-container">
-                <h2 class="title">ADMIN & DATABASE PANEL</h2>
-                <p style="color: #bbb; font-size: 14px; margin-bottom: 15px; text-align: center;">Access Formspree Dashboard or Generate Master QR.</p>
-                
-                <a href="https://formspree.io/" target="_blank" class="btn btn-download" style="display: block; text-decoration: none; text-align: center; line-height: normal; margin-bottom: 15px;">Open Formspree Dashboard ↗</a>
-                
-                <button class="btn btn-master" onclick="generateMasterQR()">Generate Master QR ⚡</button>
-
-                <div id="masterQrSection">
-                    <h3 class="title" style="margin-top: 20px; font-size: 16px;">MASTER APP QR</h3>
-                    <div class="qr-wrapper"><img id="masterQrImage" src="" alt="Master QR Code"></div>
-                    <p style="color: #bbb; font-size: 12px; margin-top: 5px;">Scan this to open the live app directly.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. Custom Password Modal with Show/Hide Toggle -->
-    <div class="modal-overlay" id="passwordModal">
-        <div class="modal-content">
-            <h3 class="modal-title">SECURITY VERIFICATION</h3>
-            <div class="password-field-wrapper">
-                <input type="password" id="adminPassInput" placeholder="Enter Admin Password" onkeydown="handleModalKeydown(event)">
-                <button type="button" class="eye-toggle-btn" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
-                    <!-- Eye Open Icon -->
-                    <svg id="eyeOpenIcon" style="display: none;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                    <!-- Eye Closed Icon -->
-                    <svg id="eyeClosedIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                        <line x1="1" y1="1" x2="23" y2="23"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-actions">
-                <button class="btn btn-download" onclick="validatePassword()">Unlock 🔓</button>
-                <button class="btn btn-reset" onclick="closePasswordModal()">Cancel</button>
+                <h2 class="title">GOOGLE SHEET DATABASE</h2>
+                <p style="color: #bbb; font-size: 14px; margin-bottom: 20px;">
+                    Click below to open, view, and edit the student records database.
+                </p>
+                <a href="https://docs.google.com/spreadsheets/d/1-NrnBqlACm4z6RD6u27zT7366Ln7r6hQ9azIg2Er1B8/edit?gid=0#gid=0" target="_blank" class="btn btn-download" style="display: block; text-decoration: none; line-height: normal; margin-bottom: 15px;">
+                    Open Google Sheet ↗
+                </a>
             </div>
         </div>
     </div>
 
     <script>
-        // Formspree Endpoint URL Added
-        const FORMSPREE_URL = "https://formspree.io/f/xjygblne";
-        const LIVE_WEB_URL = "https://ultimate7899man-byte.github.io/student-QR-app/";
-
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCy6cmxfILq1KrNsvUR9tMSzaO3-b0Lpm11InLzidkVkZsBEMULMCQMQ2-bOu2U9UR/exec";
         let currentQRUrl = "";
-        let scannedPayload = {};
+        let scannedDataPayload = {};
 
         document.getElementById('phone').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
+        // पेज लोड होते ही चेक करें कि क्या यह क्यूआर स्कैन करके खोला गया है?
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const name = urlParams.get('name');
             
             if (name) {
-                scannedPayload = {
-                    action: "scan_submit",
+                // अगर URL में डेटा है, तो स्कैन वेरिफिकेशन स्क्रीन दिखाएं
+                scannedDataPayload = {
                     name: name,
                     uucms: urlParams.get('uucms') || '',
                     phone: urlParams.get('phone') || '',
@@ -238,11 +363,11 @@
                     course: urlParams.get('course') || ''
                 };
 
-                document.getElementById('scanName').innerText = scannedPayload.name;
-                document.getElementById('scanUucms').innerText = scannedPayload.uucms;
-                document.getElementById('scanPhone').innerText = scannedPayload.phone;
-                document.getElementById('scanCourse').innerText = scannedPayload.course;
-                document.getElementById('scanCollege').innerText = scannedPayload.college;
+                document.getElementById('scanName').innerText = scannedDataPayload.name;
+                document.getElementById('scanUucms').innerText = scannedDataPayload.uucms;
+                document.getElementById('scanPhone').innerText = scannedDataPayload.phone;
+                document.getElementById('scanCourse').innerText = scannedDataPayload.course;
+                document.getElementById('scanCollege').innerText = scannedDataPayload.college;
 
                 document.getElementById('generatorStage').style.display = 'none';
                 document.getElementById('scanVerifyStage').style.display = 'flex';
@@ -250,53 +375,12 @@
             }
         });
 
-        // --- Custom Password Modal Logic ---
         function requestAdminAccess() {
-            const modal = document.getElementById('passwordModal');
-            const passInput = document.getElementById('adminPassInput');
-            passInput.value = "";
-            passInput.type = "password";
-            document.getElementById('eyeOpenIcon').style.display = 'none';
-            document.getElementById('eyeClosedIcon').style.display = 'block';
-            modal.style.display = 'flex';
-            passInput.focus();
-        }
-
-        function closePasswordModal() {
-            document.getElementById('passwordModal').style.display = 'none';
-        }
-
-        function togglePasswordVisibility() {
-            const passInput = document.getElementById('adminPassInput');
-            const eyeOpen = document.getElementById('eyeOpenIcon');
-            const eyeClosed = document.getElementById('eyeClosedIcon');
-
-            if (passInput.type === "password") {
-                passInput.type = "text";
-                eyeOpen.style.display = 'block';
-                eyeClosed.style.display = 'none';
-            } else {
-                passInput.type = "password";
-                eyeOpen.style.display = 'none';
-                eyeClosed.style.display = 'block';
-            }
-        }
-
-        function validatePassword() {
-            const password = document.getElementById('adminPassInput').value;
+            const password = prompt("Enter Admin Password to access Sheet link:");
             if (password === "Bca@1086") {
-                closePasswordModal();
                 switchView('admin');
-            } else {
-                alert("Incorrect password!");
-            }
-        }
-
-        function handleModalKeydown(event) {
-            if (event.key === 'Enter') {
-                validatePassword();
-            } else if (event.key === 'Escape') {
-                closePasswordModal();
+            } else if (password !== null) {
+                alert("Incorrect password! Access denied.");
             }
         }
 
@@ -329,16 +413,20 @@
             const course = document.getElementById('course').value;
             const submitBtn = document.getElementById('submitBtn');
 
-            if (uucms.length !== 12 || phone.length !== 10) {
-                alert("Please enter valid 12-char UUCMS and 10-digit Phone!");
+            if (uucms.length !== 12) {
+                alert("UUCMS Number must be exactly 12 characters!");
+                return;
+            }
+
+            if (phone.length !== 10) {
+                alert("Mobile number must be exactly 10 digits!");
                 return;
             }
 
             submitBtn.disabled = true;
-            submitBtn.innerText = "Syncing...";
+            submitBtn.innerText = "Syncing with Sheet...";
 
             const payload = {
-                type: "Student Registration",
                 name: name,
                 uucms: uucms,
                 phone: phone,
@@ -347,53 +435,100 @@
             };
 
             try {
-                await fetch(FORMSPREE_URL, {
+                // पहले डेटा गूगल शीट में सिंक हो जाएगा
+                const response = await fetch(APPS_SCRIPT_URL, {
                     method: "POST",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
                     body: JSON.stringify(payload)
                 });
 
-                const qrLink = `${LIVE_WEB_URL}?name=${encodeURIComponent(name)}&uucms=${encodeURIComponent(uucms)}&phone=${encodeURIComponent(phone)}&college=${encodeURIComponent(college)}&course=${encodeURIComponent(course)}`;
-                
-                currentQRUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(qrLink)}`;
-                document.getElementById('qrImage').src = currentQRUrl;
+                const result = await response.json();
 
-                const waText = `Student Details:\nName: ${name}\nUUCMS: ${uucms}\nPhone: ${phone}\nCourse: ${course}\nCollege: ${college}\n\nVerification Link:\n${qrLink}`;
-                document.getElementById('whatsappShareBtn').href = `https://wa.me/?text=${encodeURIComponent(waText)}`;
+                if (result.status === "error") {
+                    alert(result.message);
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Generate QR & Sync ⚡";
+                    return;
+                }
+
+                // अब क्यूआर कोड में इस पेज का खुद का लिंक और डेटा पास होगा
+                const currentBaseUrl = window.location.href.split('?')[0];
+                const qrContentUrl = `${currentBaseUrl}?name=${encodeURIComponent(name)}&uucms=${encodeURIComponent(uucms)}&phone=${encodeURIComponent(phone)}&college=${encodeURIComponent(college)}&course=${encodeURIComponent(course)}`;
+                
+                currentQRUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(qrContentUrl)}`;
+
+                const qrImage = document.getElementById('qrImage');
+                qrImage.src = currentQRUrl;
 
                 document.getElementById('studentForm').style.display = "none";
                 document.getElementById('resultSection').style.display = "block";
 
             } catch (err) {
-                alert("Error connecting to server!");
+                alert("Network error or script timeout. Please try again.");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Generate QR & Sync ⚡";
             }
         }
 
-        function copyStudentDetails() {
-            const textToCopy = `Student Name: ${scannedPayload.name}\nUUCMS No: ${scannedPayload.uucms}\nMobile: ${scannedPayload.phone}\nCourse: ${scannedPayload.course}\nCollege: ${scannedPayload.college}`;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                alert("Student details copied to clipboard! 📋");
-            }).catch(err => {
-                alert("Failed to copy text.");
-            });
-        }
-
+        // जब कोई स्कैन करके खुले हुए पेज पर सबमिट बटन दबाएगा
         async function submitScannedData() {
             const scanBtn = document.getElementById('scanSubmitBtn');
             scanBtn.disabled = true;
-            scanBtn.innerText = "Submitting...";
-
-            const scanPayloadWithMeta = {
-                type: "Scan Verification Submission",
-                ...scannedPayload
-            };
+            scanBtn.innerText = "Submitting Data...";
 
             try {
-                const response = await fetch(FORMSPREE_URL, {
+                const response = await fetch(APPS_SCRIPT_URL, {
                     method: "POST",
+                    body: JSON.stringify(scannedDataPayload)
+                });
+                const result = await response.json();
+
+                if (result.status === "success" || result.result === "success") {
+                    alert("Data Successfully Sent to Google Sheet! ✅");
+                    scanBtn.innerText = "Submitted Successfully 🎉";
+                } else {
+                    alert("Submission failed. Try again.");
+                    scanBtn.disabled = false;
+                    scanBtn.innerText = "Confirm & Send to Sheet ⚡";
+                }
+            } catch (err) {
+                alert("Network error! Please check your connection.");
+                scanBtn.disabled = false;
+                scanBtn.innerText = "Confirm & Send to Sheet ⚡";
+            }
+        }
+
+        async function downloadQR() {
+            if (!currentQRUrl) return;
+
+            try {
+                const response = await fetch(currentQRUrl);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = 'Student-QR.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                alert("Download failed! Please long-press or right-click the image to save.");
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('uucms').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('college').value = '';
+            document.getElementById('course').value = '';
+
+            document.getElementById('resultSection').style.display = "none";
+            document.getElementById('studentForm').style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
