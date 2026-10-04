@@ -78,6 +78,32 @@
             padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .info-box p { font-size: 14px; color: #ddd; margin-bottom: 8px; word-break: break-all; }
+
+        /* --- Password Modal Styles --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px);
+            display: none; align-items: center; justify-content: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background: rgba(16, 17, 36, 0.95);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 18px; padding: 25px; width: 90%; max-width: 360px;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2); text-align: center;
+        }
+        .modal-title { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 16px; margin-bottom: 18px; letter-spacing: 1px; }
+        .password-field-wrapper { position: relative; width: 100%; }
+        .password-field-wrapper input { padding-right: 42px; }
+        .eye-toggle-btn {
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #7d84a0;
+            display: flex; align-items: center; justify-content: center; padding: 5px;
+            transition: color 0.2s ease;
+        }
+        .eye-toggle-btn:hover { color: #00f0ff; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 15px; }
+        .modal-actions .btn { margin-top: 0; padding: 10px; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -160,9 +186,34 @@
         </div>
     </div>
 
+    <!-- 4. Custom Password Modal with Show/Hide Toggle -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal-content">
+            <h3 class="modal-title">SECURITY VERIFICATION</h3>
+            <div class="password-field-wrapper">
+                <input type="password" id="adminPassInput" placeholder="Enter Admin Password" onkeydown="handleModalKeydown(event)">
+                <button type="button" class="eye-toggle-btn" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
+                    <!-- Eye Open Icon (Default Hidden) -->
+                    <svg id="eyeOpenIcon" style="display: none;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    <!-- Eye Slashed/Closed Icon (Default Shown because password is masked) -->
+                    <svg id="eyeClosedIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-download" onclick="validatePassword()">Unlock 🔓</button>
+                <button class="btn btn-reset" onclick="closePasswordModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Updated with your new clean Apps Script Web App URL
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8BIfg7zZd2T5iquTiaF1YNVJ4c1EHGy4txei2-wD0WNIk1i91qt0DJcNMuKuzPgYz/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLuPiNXcYYDmz5lP9RGx0aWYvPvFxK0c7yvRYMwUAs0O4DpLRSW2wkmUaWQGxKwJPZ/exec";
         const LIVE_WEB_URL = "https://ultimate7899man-byte.github.io/student-QR-app/";
 
         let currentQRUrl = "";
@@ -198,12 +249,53 @@
             }
         });
 
+        // --- Custom Password Modal Logic ---
         function requestAdminAccess() {
-            const password = prompt("Enter Admin Password:");
+            const modal = document.getElementById('passwordModal');
+            const passInput = document.getElementById('adminPassInput');
+            passInput.value = "";
+            passInput.type = "password";
+            document.getElementById('eyeOpenIcon').style.display = 'none';
+            document.getElementById('eyeClosedIcon').style.display = 'block';
+            modal.style.display = 'flex';
+            passInput.focus();
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+        }
+
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('adminPassInput');
+            const eyeOpen = document.getElementById('eyeOpenIcon');
+            const eyeClosed = document.getElementById('eyeClosedIcon');
+
+            if (passInput.type === "password") {
+                passInput.type = "text";
+                eyeOpen.style.display = 'block';
+                eyeClosed.style.display = 'none';
+            } else {
+                passInput.type = "password";
+                eyeOpen.style.display = 'none';
+                eyeClosed.style.display = 'block';
+            }
+        }
+
+        function validatePassword() {
+            const password = document.getElementById('adminPassInput').value;
             if (password === "Bca@1086") {
+                closePasswordModal();
                 switchView('admin');
-            } else if (password !== null) {
+            } else {
                 alert("Incorrect password!");
+            }
+        }
+
+        function handleModalKeydown(event) {
+            if (event.key === 'Enter') {
+                validatePassword();
+            } else if (event.key === 'Escape') {
+                closePasswordModal();
             }
         }
 
