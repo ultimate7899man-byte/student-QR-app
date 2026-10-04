@@ -161,7 +161,7 @@
                     <p><strong>College:</strong> <span id="scanCollege">-</span></p>
                 </div>
                 <button class="btn btn-copy" onclick="copyStudentDetails()">Copy All Details 📋</button>
-                <button class="btn btn-download" id="scanSubmitBtn" onclick="submitScannedData()">Submit to Sheet ⚡</button>
+                <button class="btn btn-download" id="scanSubmitBtn" onclick="submitScannedData()">Submit Data ⚡</button>
             </div>
         </div>
     </div>
@@ -171,16 +171,16 @@
         <div class="center-hub">
             <div class="card-container">
                 <h2 class="title">ADMIN & DATABASE PANEL</h2>
-                <p style="color: #bbb; font-size: 14px; margin-bottom: 15px; text-align: center;">Access Google Sheet or Generate Master Database QR.</p>
+                <p style="color: #bbb; font-size: 14px; margin-bottom: 15px; text-align: center;">Access Formspree Submissions or Generate Dashboard QR.</p>
                 
-                <a href="https://docs.google.com/spreadsheets/d/1-NrnBqlACm4z6RD6u27zT7366Ln7r6hQ9azIg2Er1B8/edit?gid=0#gid=0" target="_blank" class="btn btn-download" style="display: block; text-decoration: none; text-align: center; line-height: normal; margin-bottom: 15px;">Open Google Sheet ↗</a>
+                <a href="https://formspree.io/" target="_blank" class="btn btn-download" style="display: block; text-decoration: none; text-align: center; line-height: normal; margin-bottom: 15px;">Open Formspree Dashboard ↗</a>
                 
-                <button class="btn btn-master" onclick="generateMasterQR()">Generate Master Database QR ⚡</button>
+                <button class="btn btn-master" onclick="generateMasterQR()">Generate Master QR ⚡</button>
 
                 <div id="masterQrSection">
-                    <h3 class="title" style="margin-top: 20px; font-size: 16px;">MASTER DATABASE QR</h3>
+                    <h3 class="title" style="margin-top: 20px; font-size: 16px;">MASTER SUBMISSION QR</h3>
                     <div class="qr-wrapper"><img id="masterQrImage" src="" alt="Master QR Code"></div>
-                    <p style="color: #bbb; font-size: 12px; margin-top: 5px;">Scan this to open the live student database directly.</p>
+                    <p style="color: #bbb; font-size: 12px; margin-top: 5px;">Scan this to open the live app directly.</p>
                 </div>
             </div>
         </div>
@@ -193,12 +193,12 @@
             <div class="password-field-wrapper">
                 <input type="password" id="adminPassInput" placeholder="Enter Admin Password" onkeydown="handleModalKeydown(event)">
                 <button type="button" class="eye-toggle-btn" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
-                    <!-- Eye Open Icon (Default Hidden) -->
+                    <!-- Eye Open Icon -->
                     <svg id="eyeOpenIcon" style="display: none;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                         <circle cx="12" cy="12" r="3"></circle>
                     </svg>
-                    <!-- Eye Slashed/Closed Icon (Default Shown because password is masked) -->
+                    <!-- Eye Closed Icon -->
                     <svg id="eyeClosedIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
                         <line x1="1" y1="1" x2="23" y2="23"></line>
@@ -213,7 +213,8 @@
     </div>
 
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLuPiNXcYYDmz5lP9RGx0aWYvPvFxK0c7yvRYMwUAs0O4DpLRSW2wkmUaWQGxKwJPZ/exec";
+        // Formspree Endpoint URL configured
+        const FORMSPREE_URL = "https://formspree.io/f/xjygblne";
         const LIVE_WEB_URL = "https://ultimate7899man-byte.github.io/student-QR-app/";
 
         let currentQRUrl = "";
@@ -346,7 +347,14 @@
             };
 
             try {
-                await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                await fetch(FORMSPREE_URL, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
 
                 const qrLink = `${LIVE_WEB_URL}?name=${encodeURIComponent(name)}&uucms=${encodeURIComponent(uucms)}&phone=${encodeURIComponent(phone)}&college=${encodeURIComponent(college)}&course=${encodeURIComponent(course)}`;
                 
@@ -360,7 +368,7 @@
                 document.getElementById('resultSection').style.display = "block";
 
             } catch (err) {
-                alert("Error connecting to sheet!");
+                alert("Error connecting to server!");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Generate QR & Sync ⚡";
@@ -382,50 +390,8 @@
             scanBtn.innerText = "Submitting...";
 
             try {
-                const response = await fetch(APPS_SCRIPT_URL, {
+                const response = await fetch(FORMSPREE_URL, {
                     method: "POST",
-                    body: JSON.stringify(scannedPayload)
-                });
-                const res = await response.json();
-
-                if (res.status === "success") {
-                    alert("Successfully Stored in Sheet! ✅");
-                    scanBtn.innerText = "Submitted Successfully 🎉";
-                } else {
-                    alert("Failed to submit.");
-                    scanBtn.disabled = false;
-                    scanBtn.innerText = "Submit to Sheet ⚡";
-                }
-            } catch (err) {
-                alert("Network error.");
-                scanBtn.disabled = false;
-                scanBtn.innerText = "Submit to Sheet ⚡";
-            }
-        }
-
-        function generateMasterQR() {
-            const sheetUrl = "https://docs.google.com/spreadsheets/d/1-NrnBqlACm4z6RD6u27zT7366Ln7r6hQ9azIg2Er1B8/edit";
-            const masterQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(sheetUrl)}`;
-            document.getElementById('masterQrImage').src = masterQrUrl;
-            document.getElementById('masterQrSection').style.display = "block";
-        }
-
-        async function downloadQR() {
-            if (!currentQRUrl) return;
-            const res = await fetch(currentQRUrl);
-            const blob = await res.blob();
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Student-QR.png';
-            a.click();
-        }
-
-        function resetForm() {
-            document.getElementById('studentForm').reset();
-            document.getElementById('resultSection').style.display = "none";
-            document.getElementById('studentForm').style.display = "block";
-        }
-    </script>
-</body>
-</html>
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
