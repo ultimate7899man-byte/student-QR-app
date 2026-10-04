@@ -173,7 +173,7 @@
                 <h2 class="title">ADMIN & DATABASE PANEL</h2>
                 <p style="color: #bbb; font-size: 14px; margin-bottom: 15px; text-align: center;">Access Google Sheet or Generate Master Database QR.</p>
                 
-                <a href="https://docs.google.com/spreadsheets/d/1XyZqW1v2... (Your New Google Sheet Link)" target="_blank" class="btn btn-download" style="display: block; text-decoration: none; text-align: center; line-height: normal; margin-bottom: 15px;">Open Google Sheet ↗</a>
+                <a href="https://docs.google.com/spreadsheets/d/1-NrnBqlACm4z6RD6u27zT7366Ln7r6hQ9azIg2Er1B8/edit?gid=0#gid=0" target="_blank" class="btn btn-download" style="display: block; text-decoration: none; text-align: center; line-height: normal; margin-bottom: 15px;">Open Google Sheet ↗</a>
                 
                 <button class="btn btn-master" onclick="generateMasterQR()">Generate Master Database QR ⚡</button>
 
@@ -213,8 +213,7 @@
     </div>
 
     <script>
-        // Updated with your latest working Apps Script Web App URL
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfOfEcXVKPHp9CbTSZ9M7-IoBLiWS4P7BBtEjPRtlkyAN1ZUMJHosnwF6Tr94UE8d7Tg/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLuPiNXcYYDmz5lP9RGx0aWYvPvFxK0c7yvRYMwUAs0O4DpLRSW2wkmUaWQGxKwJPZ/exec";
         const LIVE_WEB_URL = "https://ultimate7899man-byte.github.io/student-QR-app/";
 
         let currentQRUrl = "";
@@ -387,4 +386,46 @@
                     method: "POST",
                     body: JSON.stringify(scannedPayload)
                 });
-                const res = await response.jso
+                const res = await response.json();
+
+                if (res.status === "success") {
+                    alert("Successfully Stored in Sheet! ✅");
+                    scanBtn.innerText = "Submitted Successfully 🎉";
+                } else {
+                    alert("Failed to submit.");
+                    scanBtn.disabled = false;
+                    scanBtn.innerText = "Submit to Sheet ⚡";
+                }
+            } catch (err) {
+                alert("Network error.");
+                scanBtn.disabled = false;
+                scanBtn.innerText = "Submit to Sheet ⚡";
+            }
+        }
+
+        function generateMasterQR() {
+            const sheetUrl = "https://docs.google.com/spreadsheets/d/1-NrnBqlACm4z6RD6u27zT7366Ln7r6hQ9azIg2Er1B8/edit";
+            const masterQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(sheetUrl)}`;
+            document.getElementById('masterQrImage').src = masterQrUrl;
+            document.getElementById('masterQrSection').style.display = "block";
+        }
+
+        async function downloadQR() {
+            if (!currentQRUrl) return;
+            const res = await fetch(currentQRUrl);
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Student-QR.png';
+            a.click();
+        }
+
+        function resetForm() {
+            document.getElementById('studentForm').reset();
+            document.getElementById('resultSection').style.display = "none";
+            document.getElementById('studentForm').style.display = "block";
+        }
+    </script>
+</body>
+</html>
