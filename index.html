@@ -133,6 +133,15 @@
                             <option value="BBA">BBA</option>
                             <option value="B.COM">B.COM</option>
                         </select>
+                        <select id="semester" required>
+                            <option value="">-- Choose Semester --</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                        </select>
                     </div>
                     <button type="submit" id="submitBtn" class="btn btn-generate">Generate QR & Sync ⚡</button>
                 </form>
@@ -158,6 +167,7 @@
                     <p><strong>UUCMS:</strong> <span id="scanUucms">-</span></p>
                     <p><strong>Mobile:</strong> <span id="scanPhone">-</span></p>
                     <p><strong>Course:</strong> <span id="scanCourse">-</span></p>
+                    <p><strong>Semester:</strong> <span id="scanSemester">-</span></p>
                     <p><strong>College:</strong> <span id="scanCollege">-</span></p>
                 </div>
                 <button class="btn btn-copy" onclick="copyStudentDetails()">Copy All Details 📋</button>
@@ -234,13 +244,15 @@
                     uucms: urlParams.get('uucms') || '',
                     phone: urlParams.get('phone') || '',
                     college: urlParams.get('college') || '',
-                    course: urlParams.get('course') || ''
+                    course: urlParams.get('course') || '',
+                    semester: urlParams.get('semester') || ''
                 };
 
                 document.getElementById('scanName').innerText = scannedPayload.name;
                 document.getElementById('scanUucms').innerText = scannedPayload.uucms;
                 document.getElementById('scanPhone').innerText = scannedPayload.phone;
                 document.getElementById('scanCourse').innerText = scannedPayload.course;
+                document.getElementById('scanSemester').innerText = scannedPayload.semester ? `Semester ${scannedPayload.semester}` : '-';
                 document.getElementById('scanCollege').innerText = scannedPayload.college;
 
                 document.getElementById('generatorStage').style.display = 'none';
@@ -326,6 +338,7 @@
             const phone = document.getElementById('phone').value.trim();
             const college = document.getElementById('college').value.trim();
             const course = document.getElementById('course').value;
+            const semester = document.getElementById('semester').value;
             const submitBtn = document.getElementById('submitBtn');
 
             if (uucms.length !== 12 || phone.length !== 10) {
@@ -342,7 +355,8 @@
                 uucms: uucms,
                 phone: phone,
                 college: college,
-                course: course
+                course: course,
+                semester: semester
             };
 
             try {
@@ -355,12 +369,12 @@
                     body: JSON.stringify(payload)
                 });
 
-                const qrLink = `${LIVE_WEB_URL}?name=${encodeURIComponent(name)}&uucms=${encodeURIComponent(uucms)}&phone=${encodeURIComponent(phone)}&college=${encodeURIComponent(college)}&course=${encodeURIComponent(course)}`;
+                const qrLink = `${LIVE_WEB_URL}?name=${encodeURIComponent(name)}&uucms=${encodeURIComponent(uucms)}&phone=${encodeURIComponent(phone)}&college=${encodeURIComponent(college)}&course=${encodeURIComponent(course)}&semester=${encodeURIComponent(semester)}`;
                 
                 currentQRUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(qrLink)}`;
                 document.getElementById('qrImage').src = currentQRUrl;
 
-                const waText = `Student Details:\nName: ${name}\nUUCMS: ${uucms}\nPhone: ${phone}\nCourse: ${course}\nCollege: ${college}\n\nVerification Link:\n${qrLink}`;
+                const waText = `Student Details:\nName: ${name}\nUUCMS: ${uucms}\nPhone: ${phone}\nCourse: ${course}\nSemester: ${semester}\nCollege: ${college}\n\nVerification Link:\n${qrLink}`;
                 document.getElementById('whatsappShareBtn').href = `https://wa.me/?text=${encodeURIComponent(waText)}`;
 
                 document.getElementById('studentForm').style.display = "none";
@@ -375,7 +389,7 @@
         }
 
         function copyStudentDetails() {
-            const textToCopy = `Student Name: ${scannedPayload.name}\nUUCMS No: ${scannedPayload.uucms}\nMobile: ${scannedPayload.phone}\nCourse: ${scannedPayload.course}\nCollege: ${scannedPayload.college}`;
+            const textToCopy = `Student Name: ${scannedPayload.name}\nUUCMS No: ${scannedPayload.uucms}\nMobile: ${scannedPayload.phone}\nCourse: ${scannedPayload.course}\nSemester: ${scannedPayload.semester ? `Semester ${scannedPayload.semester}` : '-'}\nCollege: ${scannedPayload.college}`;
             navigator.clipboard.writeText(textToCopy).then(() => {
                 alert("Student details copied to clipboard! 📋");
             }).catch(err => {
